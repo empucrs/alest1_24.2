@@ -22,9 +22,16 @@ public class MinhaPilha {
 
     //pop(): remove e retorna o elemento do topo da pilha (erro se a pilha estiver vazia)
     public int pop(){
-        int result=top();
+        //Alternativa 1: posso reutilizar o top
+        //int result=top();
+        //nElementos--;
+        //return result--;
+        
+        //Alternativa 2: implemento do zero
+        if(nElementos==0)
+            throw new RuntimeException("A pilha está vazia");        
         nElementos--;
-        return result;
+        return pilha[nElementos];
     }
     //top(): retorna, mas não remove, o elemento do topo pilha (erro se a pilha estiver vazia)
     public int top(){
