@@ -69,21 +69,41 @@ public class MinhaLinkedList {
         count=0;
     }
 
-    //boolean	contains(int valorBuscado)
+    //boolean	contains(int valorAEncontrar)
     //  Retorna verdadeiro se o parametro existe na lista
-    public boolean contains(int valorBuscado){        
-        return false;
+    public boolean contains(int valorAEncontrar){
+        return (indexOf(valorAEncontrar)!=-1);
     }
 
     //int	get(int index)
     //  Retorna o elemento armazenado na posicao indicada
-    public int get(int index){
-        return 0;
+    public int get(int index){        
+        if((index<0)||index>=count)// indice invalido
+            throw new RuntimeException("O indice informado não é válido");
+        
+        // A partir daqui, eu tenho certeza q o indice é válido
+        int contagem=0;
+        MeuNodo mn=head;
+        while(contagem!=index){
+            contagem++;
+            mn=mn.proximo;
+        }
+
+        return mn.valor;
+
     }
 
-    //int	indexOf(int valorBuscado)
+    //int	indexOf(int valorAEncontrar)
     //  Retorna o indice que contem o valor indicado ou -1 se não existir
-    public int indexOf(int valorBuscado){
+    public int indexOf(int valorAEncontrar){
+
+        MeuNodo mn = head;
+        for(int i=0;i<count; i++){
+            if(valorAEncontrar==mn.valor) 
+                return i;
+            mn=mn.proximo;
+        }
+
         return -1;
     }
 
