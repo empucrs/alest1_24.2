@@ -17,8 +17,7 @@ public class MinhaDoubledLinkedList {
     Nodo head, tail;
 
     public MinhaDoubledLinkedList() {
-        count=0;
-        head=tail=null;
+        clear();
     }
 
     //boolean	add(int e) 
@@ -36,9 +35,47 @@ public class MinhaDoubledLinkedList {
         return true;
     }
 
+    private Nodo buscaNodo(int index){
+        validateIdx(index);
+
+        //2º percorre a lista procurando o indice        
+        Nodo nav = (index<(count/2))?head:tail;
+        /*
+         if(index<(count/2)) nav=head
+         else nav=tail;
+        */
+        if(nav==head)
+            for(int i=0; i<index; i++)
+                nav=nav.prox;
+        else
+            for(int i=count-1; i!=index; i--)
+                nav=nav.prev;
+
+        return nav;
+
+    }
+
     //void	add(int index, int element)
     //  Armazena o valor na posicao indicada
     public void add(int index, int element){
+        Nodo nav = buscaNodo(index);
+        //2º Cria o novo nodo
+        Nodo aux = new Nodo(element);
+
+        //3º vincula com os elementos adequados
+        if(nav!=head){
+            aux.prox=nav;
+            aux.prev=nav.prev;
+
+            nav.prev=aux;
+            aux.prev.prox=nav;
+        }
+        else{
+            aux.prox=head;
+            head.prev=aux;
+            head=aux;
+        }
+        count++;
     }
 
     //void	add(int index, int [] element)
@@ -49,12 +86,14 @@ public class MinhaDoubledLinkedList {
     //void	clear()
     //  Remove todos elementos da lista
     public void clear(){
+        count=0;
+        head=tail=null;
     }
 
     //boolean	contains(int valorAEncontrar)
     //  Retorna verdadeiro se o parametro existe na lista
     public boolean contains(int valorAEncontrar){
-        return false;
+        return (indexOf(valorAEncontrar)!=-1);
     }
 
     private void validateIdx(int idx){
@@ -65,19 +104,28 @@ public class MinhaDoubledLinkedList {
     //int	get(int index)
     //  Retorna o elemento armazenado na posicao indicada
     public int get(int index){
-        return 0;
+        Nodo nav = buscaNodo(index);
+        return nav.valor;
     }
 
     //int	indexOf(int valorAEncontrar)
     //  Retorna o indice que contem o valor indicado ou -1 se não existir
     public int indexOf(int valorAEncontrar){
+        //1ª percorre até encontrar ou até o fim na lista
+        Nodo nav=head;
+        for(int i=0; nav!=null; i++){
+            // se o valor for encontrado, retorna o indice
+            if(nav.valor==valorAEncontrar) return i;
+            nav=nav.prox;
+        }
+        //2º retorna o resultado se não havia valor procurado na lista
         return -1;
     }
 
     //boolean	isEmpty()
     //  Retorna verdadeiro se não houver elementos na lista
     public boolean isEmpty(){
-        return false;
+        return (count==0);
     }
 
     //int	remove(int index)
@@ -95,6 +143,8 @@ public class MinhaDoubledLinkedList {
     //int	set(int index, int element)
     //  Altera o conteudo de uma posicao específica
     public boolean set(int index, int element){
+        Nodo nav = buscaNodo(index);
+        nav.valor=element;
         return true;
 
     }
@@ -102,7 +152,7 @@ public class MinhaDoubledLinkedList {
     //int	size()
     //  Retorna o número de itens na lista
     public int size(){
-        return -1;
+        return count;
     }
 
     public String toString(){
@@ -113,14 +163,8 @@ public class MinhaDoubledLinkedList {
         sb.append("A lista contem "+count+" elementos\n");
         sb.append("[");
 
-        Nodo aux=head;
-/*
-        while(aux!=null){
-            aux=aux.prox;
-        }
-*/
-        for(aux=head; aux!=null; aux=aux.prox){
-            if(aux.prox!=null) sb.append(aux.valor+", ");
+        for(Nodo aux=tail; aux!=null; aux=aux.prev){
+            if(aux.prev!=null) sb.append(aux.valor+", ");
             else sb.append(aux.valor);
         }
         sb.append("]\n");

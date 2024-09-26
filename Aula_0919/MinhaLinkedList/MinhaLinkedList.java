@@ -75,13 +75,16 @@ public class MinhaLinkedList {
         return (indexOf(valorAEncontrar)!=-1);
     }
 
+    private void validateIdx(int idx){
+        if ((idx<0)||(idx>=count))
+            throw new RuntimeException("O indice informado não é válido");
+    }
+
     //int	get(int index)
     //  Retorna o elemento armazenado na posicao indicada
-    public int get(int index){        
-        if((index<0)||index>=count)// indice invalido
-            throw new RuntimeException("O indice informado não é válido");
-        
-        // A partir daqui, eu tenho certeza q o indice é válido
+    public int get(int index){
+        validateIdx(index);
+        // A partir daqui, eu tenho certeza q o indice é válido        
         int contagem=0;
         MeuNodo mn=head;
         while(contagem!=index){
@@ -96,7 +99,7 @@ public class MinhaLinkedList {
     //int	indexOf(int valorAEncontrar)
     //  Retorna o indice que contem o valor indicado ou -1 se não existir
     public int indexOf(int valorAEncontrar){
-
+        
         MeuNodo mn = head;
         for(int i=0;i<count; i++){
             if(valorAEncontrar==mn.valor) 
@@ -130,7 +133,19 @@ public class MinhaLinkedList {
     //int	set(int index, int element)
     //  Altera o conteudo de uma posicao específica
     public boolean set(int index, int element){
-        return false;
+        validateIdx(index);
+
+        // A partir daqui, eu tenho certeza q o indice é válido        
+        int contagem=0;
+        MeuNodo mn=head;
+        while(contagem!=index){
+            contagem++;
+            mn=mn.proximo;
+        }
+
+        mn.valor=element;
+        return true;
+
     }
 
     //int	size()

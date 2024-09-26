@@ -148,7 +148,49 @@ public class MinhaLinkedList {
     //int	remove(int index)
     //  Remove item de posição específica, retornando o valor que lá estava armazenado
     public int remove(int index){
-        return 0;
+        int result;
+        //1º validar o indice
+        validateIdx(index);
+
+
+        //2º investiga se deve remover o head
+        if(index==0){
+            // 2aª remove o primeiro elemento
+            MeuNodo aux = head;
+            head=head.proximo;
+            aux.proximo=null;
+
+            // 2bº Salva o conteudo do nodo
+            result=aux.valor;
+
+            // 2cª confere se a lista tinha só um elemento
+            if(count==1) // (tail==aux)
+                tail=null;
+            
+        }
+        else{
+
+            //2aº navegar até a posição anterior ao elemento a ser removido
+            MeuNodo nav=head;
+            for(int i=0; i<index-1; i++);
+                nav=nav.proximo;
+
+            //2bº salvar refs/valores
+            MeuNodo aux=nav.proximo;
+            result = aux.valor;
+
+            //2cº remover da lista
+            nav.proximo=aux.proximo;
+            aux.proximo=null;
+
+            //2dº Atualiza o tail
+            if(aux==tail)
+                tail=nav;
+        }
+
+        //3º atualizar o count
+        count--;
+        return result;
     }
 
     //boolean	remove(int index, int nElementos)
