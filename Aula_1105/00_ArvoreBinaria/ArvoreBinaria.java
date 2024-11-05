@@ -160,8 +160,32 @@ public class ArvoreBinaria{
     //public boolean isInternal(Integer e){}
     //public boolean isExternal(Integer e){}
 
+    private void removeBranch(Nodo ref){
+        if(ref!=null){
+
+            if(ref.filhoEsquerda!=null) removeBranch(ref.filhoEsquerda);
+            if(ref.filhoDireita!=null)  removeBranch(ref.filhoDireita);
+
+            if(ref.pai!=null) {
+                if(ref.pai.filhoEsquerda==ref) ref.pai.filhoEsquerda=null;
+                if(ref.pai.filhoDireita==ref)  ref.pai.filhoDireita =null;
+            }
+            ref.pai=null;            
+            nElementos--;
+        }
+    }
+
     public boolean removeBranch(Integer e){
-        return false;
+        // valido se o parâmetro é valido
+        if(e==null) throw new IllegalArgumentException("O argumento é invalido");
+        
+        // encontro o elemento
+        Nodo aux = findElementCentral(e, raiz);
+        if(aux==null) return false;
+
+        // remocao do ramo/branch
+        removeBranch(aux);
+        return true;
     }
 
     //public boolean contains(Integer e){}
@@ -208,7 +232,11 @@ public class ArvoreBinaria{
         ab.addRight(3, 1);
         ab.addLeft(4, 3);
         ab.addRight(5, 3);
-
         System.out.println(ab);
+        System.out.println("Nro de elementos = "+ab.size());
+
+        ab.removeBranch(3);
+        System.out.println(ab);
+        System.out.println("Nro de elementos = "+ab.size());
     }
 }
